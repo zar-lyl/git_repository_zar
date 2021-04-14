@@ -1,0 +1,11 @@
+com\usian\mapper\TbOrderShippingMapper.class
+com\usian\mapper\TbItemParamMapper.class
+com\usian\mapper\TbOrderItemMapper.class
+com\usian\mapper\TbItemDescMapper.class
+com\usian\mapper\TbItemMapper.class
+com\usian\mapper\TbOrderMapper.class
+com\usian\mapper\TbUserMapper.class
+com\usian\mapper\TbItemParamItemMapper.class
+com\usian\mapper\TbContentCategoryMapper.class
+com\usian\mapper\TbItemCatMapper.class
+com\usian\mapper\TbContentMapper.class

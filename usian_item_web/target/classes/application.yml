@@ -1,6 +1,8 @@
 spring:
   application:
     name: usian-item-web
+#  main:
+#    allow-bean-definition-overriding: true
 server:
   port: 8091
 eureka:

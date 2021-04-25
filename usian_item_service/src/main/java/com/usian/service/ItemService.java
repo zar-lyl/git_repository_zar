@@ -9,6 +9,7 @@ import com.usian.mapper.TbItemParamItemMapper;
 import com.usian.pojo.*;
 import com.usian.utils.IDUtils;
 import com.usian.utils.PageResult;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,9 @@ public class ItemService {
 
     @Autowired
     private TbItemCatMapper tbItemCatMapper;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     public TbItem getById(Long itemId) {
         return tbItemMapper.selectByPrimaryKey(itemId);
@@ -81,6 +85,9 @@ public class ItemService {
         tbItemParamItem.setUpdated(date);
         tbItemParamItem.setCreated(date);
         Integer itemParamItmeNum = tbItemParamItemMapper.insertSelective(tbItemParamItem);
+
+        amqpTemplate.convertAndSend("item_exchage", "item.add", itemId);
+
         return tbItemNum + tbitemDescNum + itemParamItmeNum;
     }
 
@@ -146,5 +153,20 @@ public class ItemService {
         tbItem.setStatus((byte) 0);
         tbItem.setId(itemId);
         return tbItemMapper.updateByPrimaryKeySelective(tbItem);
+    }
+
+    public TbItemDesc selectItemDescByItemId(Long itemId) {
+        return tbItemDescMapper.selectByPrimaryKey(itemId);
+    }
+
+    public TbItemParamItem selectTbItemParamItemByItemId(Long itemId) {
+        TbItemParamItemExample example = new TbItemParamItemExample();
+        TbItemParamItemExample.Criteria criteria = example.createCriteria();
+        criteria.andItemIdEqualTo(itemId);
+        List<TbItemParamItem> tbItemParamItems = tbItemParamItemMapper.selectByExampleWithBLOBs(example);
+        if (tbItemParamItems != null && tbItemParamItems.size() > 0) {
+            return tbItemParamItems.get(0);
+        }
+        return null;
     }
 }

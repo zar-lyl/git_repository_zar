@@ -9,6 +9,7 @@ import com.usian.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,5 +35,16 @@ public class ItemParamService {
         List<TbItemParam> list = tbItemParamMapper.selectByExampleWithBLOBs(null);
         PageInfo<TbItemParam> info = new PageInfo<>(list);
         return new PageResult(1, info.getTotal(), info.getList());
+    }
+
+    public Integer insertItemParam(TbItemParam tbItemParam) {
+        Date date = new Date();
+        tbItemParam.setCreated(date);
+        tbItemParam.setUpdated(date);
+        return tbItemParamMapper.insert(tbItemParam);
+    }
+
+    public Integer deleteItemParamById(Long id) {
+        return tbItemParamMapper.deleteByPrimaryKey(id);
     }
 }
